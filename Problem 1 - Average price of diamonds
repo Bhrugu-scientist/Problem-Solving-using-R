@@ -1,0 +1,50 @@
+## The data set includes the price of diamonds according to their colours. 
+
+# Problem :- IS there enough evidence to claim that average price of diamond for colour B is more than 1500?
+# Let's get started.
+
+# Step1 :- Import the data set in R. I have imported the data in a vector "mydata" I have attached the data set as Damond Colours in this repository
+
+mydata <- read.csv(file.choose())
+
+# Let us explore the data
+
+str(mydata)
+
+#Output :- 
+#'data.frame':	90 obs. of  2 variables:
+# $ Diamond.Color: Factor w/ 7 levels " X","A","B","C",..: 2 3 5 5 2 3 4 5 7 6 ... # levels shows number of colours i.e 7
+# $ Price        : int  1302 1510 1510 1260 1641 1555 1427 1427 1126 1126 ...      
+ 
+ # you can explore and understand the data set more by using following code
+
+
+summary(mydata)
+nrow(mydata)        # shows number of rows
+ncol(mydata)        # shows number of columns
+mean(mydata$Price)  # mean of price
+sd(mydata$Price)    # standard deviation of price
+
+#Confidence Interval = 95%
+#Alpha = 0.05
+
+# Null Hypothesis H0 : µ = 1500
+# Alternate Hypothesis H1 : µ > 1500
+
+t.test(mydata$Price,mu=1500,alternative="greater")  # Perform a t-test
+
+
+#Output :- 
+#data:  mydata$Price
+#t = 10.157, df = 89, p-value < 2.2e-16
+#alternative hypothesis: true mean is greater than 1500
+#95 percent confidence interval:
+#3018.173      Inf
+#sample estimates:
+#mean of x 
+#3315.244 
+
+# P-value is less than 2.2e-16 i.e. 0.00000000000000022, which is very less than alpha (0.05).
+# So null hypothesis is rejected. Thus price of diamond with colour B is more than 1500.
+
+
