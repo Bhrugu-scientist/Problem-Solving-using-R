@@ -1,0 +1,333 @@
+#In the first part of assignment a data set (trees) is used to describe the data graphically and numerically. In second part of assignment 
+#data sets (rubber and oddbooks) is used to build multiple regression model using R functions to predict influential variables.
+
+
+
+# 1) Invoke R and use the "Trees" dataset
+
+
+?trees
+#The above line all the information regarding trees data set in R studio which includes its description, usage, format, source, 
+#references and examples. Trees data set provides measurements of the diameter,height and volume of timber in 31 felled black cherry trees. Here diameter is used as Girth.
+
+
+
+
+# 2) Find the 5 summary numbers in the data
+
+
+summary(trees)
+sapply(trees,is.factor)
+nrow(trees)
+ncol(trees)
+
+##Output:  
+##Girth           Height       Volume     
+ Min.   : 8.30   Min.   :63   Min.   :10.20  
+ 1st Qu.:11.05   1st Qu.:72   1st Qu.:19.40  
+ Median :12.90   Median :76   Median :24.20  
+ Mean   :13.25   Mean   :76   Mean   :30.17  
+ 3rd Qu.:15.25   3rd Qu.:80   3rd Qu.:37.30  
+ Max.   :20.60   Max.   :87   Max.   :77.00 
+
+#This is a way to get the summary of Girth (diameter), Height and Volume of the trees dataset. The output of summary provides
+#Minimum value, 1st Quartile, Median, Mean, 3rd Quartile and Maximum Value. For example in the column Girth, min : 8.30 shows that it is
+#the minimum value in that column, 11.05 is 1st quartile of Girth column, median for Girth is 12.9, mean is 13.25 and highest value in 
+#Girth is 20.60. And it follows the same for Height and Volume too.
+
+
+# 3) Graph a straight line regression
+
+
+#Girth,Volume
+
+
+regression <- lm(Girth~Volume,data = trees)
+with(trees,plot(Girth~Volume))
+abline(regression)
+summary(regression)
+
+## The first line compares the average value of Girth and volume from data set Trees using lm method. The second line adds a scatter plot of Girth and Volume.
+##Third line provides a regression line using the (abline) function. This shows that there is positive and strong correlation between girth and volume. As the girth increases volume also increases.
+
+
+
+#Girth,Height
+
+
+regression1 <- lm(Girth~Height,data = trees)
+regression
+with(trees,plot(Girth~Height))
+abline(regression1)
+
+## The first line compares the average value of Girth and volume from data set Trees using lm method. The second line adds a scatter plot of Girth and Volume.
+##Third line provides a regression line using the (abline) function. This shows that there is positive and strong correlation between girth and volume. As the girth increases volume also increases.
+
+#The above plot shows that there is moderately positive relation between girth and height. 
+#It can be difficult to interpret the relation between girth and height as they have moderate relationship.
+
+
+
+#Volume,Height
+
+regression2 <- lm(Volume~Height,data = trees)
+regression2
+with(trees,plot(Volume~Height))
+abline(regression2)
+
+#The regression line will compare mean values of Girth and Height and 2nd and 3rd line will plot them with straight line.
+#The above plot depicts moderate positive relationship between volume and height.
+
+# 4 Create Histograms and Density Plots
+
+
+
+# (a) Histogram and density plot of Girth
+
+
+s <- ggplot(data = trees, aes(x = Girth))
+s + geom_histogram(binwidth = 2,aes(fill = Girth),colour = "blue") 
+plot(density(trees$Girth),type = "l")
+
+#Here, arguments are stored for plotting into a vector “s” and thus adding more parameters along with histogram becomes easy. 
+#	ggplot package is used to plot histograms. 
+#	(aes) stands for aesthetics, which states that Girth is plotted on X-axis.
+#	Geom_histogram is the geometry for plotting a histogram
+#	binwidth we can decide how long the bins can be of a histogram.
+#	Bins of histogram will be filled with black color and blue border.
+#	Third line plots the density plot. Trees$Girth takes the girth from trees dataset and plots it. Below are the histogram and density plots of Girth.
+#This distribution is moderately positive as the tail is inclined towards the right of x-axis. More values are clustering towards the left side of x-axis.
+
+
+
+
+# (b) HIstogram and Density plot of Volume
+
+
+s1 <- ggplot(data = trees, aes(x = Volume))
+s1 + geom_histogram(binwidth = 3,aes(fill = Volume),colour = "blue") 
+p <- plot(density(trees$Volume),type = "l")
+
+
+
+
+# (c) Histogram and Density Plots of Height
+
+
+s2 <- ggplot(data = trees, aes(x = Height))
+s2 + geom_histogram(binwidth = 2,aes(fill = Height),colour = "blue") 
+plot(density(trees$Height),type = "l")
+
+
+
+# (5) Create Boxplots
+
+
+
+# (a) Girth
+boxplot(trees$Girth,horizontal = T)
+rug(trees$Girth,side = 1)
+
+#Trees$Girth selects Girth column from trees dataset and then it is boxplotted. 
+#Rug displays the marks on axis. Basically, boxplot displays how the data is spread out.
+
+
+
+# (b) Volume
+boxplot(trees$Volume,horizontal = T)
+rug(trees$Volume,side = 1)
+
+
+
+# (c) Height
+boxplot(trees$Height,horizontal = T)
+rug(trees$Height,side = 1)
+
+
+
+# (6) Normal Probability PLots
+
+qqnorm(trees$Girth)
+qqline(trees$Girth,col='red')
+
+qqnorm(trees$Height)
+qqline(trees$Height,col='red')
+
+qqnorm(trees$Volume)
+qqline(trees$Volume,col='red')
+
+
+
+## PART B
+
+
+install.packages(MASS)
+library(MASS)
+?Rubber
+
+install.packages(DAAG)
+library(DAAG)
+?oddbooks
+
+
+# Rubber Data Set
+
+mydata <- Rubber
+mydata
+
+
+str(mydata)
+ncol(mydata)
+nrow(mydata)
+
+
+cor.test(x = mydata$loss,y = mydata$hard,method = "pearson")
+cor.test(x = mydata$loss,y = mydata$tens,method = "pearson")
+
+
+pairs(mydata)
+
+
+regressor <- lm(loss~hard+tens,data = mydata)
+
+## Output : 
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-79.385 -14.608   3.816  19.755  65.981 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 885.1611    61.7516  14.334 3.84e-14 ***
+hard         -6.5708     0.5832 -11.267 1.03e-11 ***
+tens         -1.3743     0.1943  -7.073 1.32e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 36.49 on 27 degrees of freedom
+Multiple R-squared:  0.8402,	Adjusted R-squared:  0.8284 
+F-statistic:    71 on 2 and 27 DF,  p-value: 1.767e-11
+
+#	Intercept in the output is 885.16. So we can conclude that when hardness and tensile strength = 0, if the hardness increases by 1 then
+# loss will decrease by 6.57 and if the tensile strength increases by 1 then loss will decrease by 1.37. 
+# As the significance level shown in last column the p-value is 0.001 and the confidence level is 99.999
+
+summary(regressor)
+
+?ggcorplot
+
+install.packages(ggcorplot)
+library(ggcorrplot)
+
+r <- cor(mydata,use = "complete.obs")
+r
+corrplot(r,method = "number")
+ggcorrplot(r)
+
+
+
+par(mfrow = c(1,2))
+termplot(regressor,partial = T,smooth = panel.smooth)
+par(mfrow = c(1,1))
+
+
+
+## Oddbooks
+
+?oddbooks
+oddbooks
+str(oddbooks)
+
+
+
+# as thickness increases,height,breadth and weigth increases
+
+mydata1 <- log(oddbooks)
+mydata1
+
+
+model1 <- lm(weight~thick,data=mydata1)
+model1
+summary(model1)
+summary(model1$coefficients)
+
+Call:
+lm(formula = weight ~ thick, data = mydata1)
+
+Coefficients:
+(Intercept)        thick  
+      9.692       -1.073  
+
+
+#Output: 
+
+Call:
+lm(formula = weight ~ thick, data = mydata1)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.37651 -0.12228  0.00898  0.12479  0.49276 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   9.6920     0.7076  13.697 8.35e-08 ***
+thick        -1.0726     0.2190  -4.897 0.000626 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2446 on 10 degrees of freedom
+Multiple R-squared:  0.7057,	Adjusted R-squared:  0.6762 
+F-statistic: 23.98 on 1 and 10 DF,  p-value: 0.0006263
+
+
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ -1.073   1.619   4.310   4.310   7.001   9.692
+ 
+#	When thickness is 0 the weight is 9.69 and as the weight increases by 1, thickness will decrease by 1.07.
+#	Thus, weight and thickness has negative correlation.
+
+
+
+model2 <- lm(weight~thick+height,data = mydata1)
+model2
+summary(model2)
+summary(model2$coefficients)
+
+
+
+model3 <- lm(weight~thick+height+breadth,data = mydata1)
+model3
+summary(model3)
+summary(model3$coefficients)
+
+
+
+
+plot(model1)
+
+plot(model2)
+
+plot(model3)
+
+
+
+ggplot(oddbooks,aes(thick,weight)) + geom_point(aes(color = thick)) +geom_smooth(method = "lm")
+
+ggplot(oddbooks,aes(thick+height,weight)) + geom_point(aes(color = thick)) + geom_smooth(method = "lm")
+
+ggplot(oddbooks,aes(thick+height+breadth,weight)) + geom_point(aes(color = thick)) +geom_smooth(method = "lm")
+
+
+
+library(corrplot)
+library(visreg)
+
+
+
+r1 <- cor(mydata1,use = "complete.obs")
+ggcorrplot(r1,method = "square")
+corrplot(r1,method = "number")
+
+
+
+
