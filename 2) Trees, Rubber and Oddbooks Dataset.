@@ -1,4 +1,4 @@
-#In the first part of assignment a data set (trees) is used to describe the data graphically and numerically. In second part of assignment 
+#In the first part of a data set (trees) is used to describe the data graphically and numerically. In second part of assignment 
 #data sets (rubber and oddbooks) is used to build multiple regression model using R functions to predict influential variables.
 
 
@@ -125,8 +125,11 @@ plot(density(trees$Height),type = "l")
 
 
 # (a) Girth
+
+
 boxplot(trees$Girth,horizontal = T)
 rug(trees$Girth,side = 1)
+
 
 #Trees$Girth selects Girth column from trees dataset and then it is boxplotted. 
 #Rug displays the marks on axis. Basically, boxplot displays how the data is spread out.
@@ -134,12 +137,16 @@ rug(trees$Girth,side = 1)
 
 
 # (b) Volume
+
+
 boxplot(trees$Volume,horizontal = T)
 rug(trees$Volume,side = 1)
 
 
 
 # (c) Height
+
+
 boxplot(trees$Height,horizontal = T)
 rug(trees$Height,side = 1)
 
@@ -250,6 +257,8 @@ model1 <- lm(weight~thick,data=mydata1)
 model1
 summary(model1)
 summary(model1$coefficients)
+
+#Output:-
 
 Call:
 lm(formula = weight ~ thick, data = mydata1)
